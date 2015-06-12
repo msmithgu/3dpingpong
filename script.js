@@ -1,5 +1,11 @@
 var gameWidth = 640,
-    gameHeight = 480;
+    gameHeight = 480,
+    gameCenterX = gameWidth/2,
+    gameCenterY = gameHeight/2,
+    gameQuarterX = gameWidth/4,
+    gameQuarterY = gameHeight/4,
+    gameEighthX = gameWidth/8,
+    gameEighthY = gameHeight/8;
 
 function setup() {
   createCanvas(gameWidth, gameHeight);
@@ -8,13 +14,39 @@ function setup() {
 
 function draw() {
   clear();
-  // ball
-  ellipse(50, 50, 50, 50);
 
-  /**
-   * paddle
-   */
-  var paddleX = mouseX || gameWidth/2, paddleY = mouseY || gameHeight/2;
+  drawHall();
+
+  drawBall();
+
+  drawPaddle();
+}
+
+function drawHall() {
+  noFill();
+  stroke(0, 255, 0);
+
+  strokeWeight(2);
+  rect(gameEighthX, gameEighthY, gameWidth * 0.75, gameHeight * 0.75);
+
+  strokeWeight(1);
+  rect(gameQuarterX, gameQuarterY, gameCenterX, gameCenterY);
+  line(0, 0, gameQuarterX, gameQuarterY);
+  line(0, gameHeight, gameQuarterX, gameHeight - gameQuarterY);
+  line(gameWidth, 0, gameWidth - gameQuarterX, gameQuarterY);
+  line(gameWidth, gameHeight, gameWidth - gameQuarterX, gameHeight - gameQuarterY);
+}
+
+function drawBall() {
+  var ballWidth = 48;
+  fill(255);
+  strokeWeight(0);
+  ellipse(gameCenterX, gameCenterY, ballWidth, ballWidth);
+}
+
+function drawPaddle() {
+
+  var paddleX = mouseX, paddleY = mouseY;
   var paddleWidth = 150, paddleHeight = 100, paddleStroke = 4, paddleRounding = 20;
 
   // enforce boundary conditions
@@ -49,6 +81,7 @@ function draw() {
         paddleX + paddleWidth/2, paddleY );
 
   // inner border
+  fill(color(0, 255, 0, 60));
   stroke(0, 255, 0);
   strokeWeight(paddleStroke/2);
   rect( paddleX - paddleWidth/4, paddleY - paddleHeight/4,
