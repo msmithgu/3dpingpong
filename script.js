@@ -26,7 +26,7 @@ function draw() {
 
 function drawHall() {
   noFill();
-  stroke(0, 255, 0);
+  stroke(0, 150, 0);
 
   strokeWeight(2);
   rect(gameEighthX, gameEighthY, gameWidth * 0.75, gameHeight * 0.75);
