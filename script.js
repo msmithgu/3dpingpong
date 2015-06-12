@@ -5,7 +5,9 @@ var gameWidth = 640,
     gameQuarterX = gameWidth/4,
     gameQuarterY = gameHeight/4,
     gameEighthX = gameWidth/8,
-    gameEighthY = gameHeight/8;
+    gameEighthY = gameHeight/8,
+    paddleX = gameCenterX,
+    paddleY = gameCenterY;
 
 function setup() {
   createCanvas(gameWidth, gameHeight);
@@ -46,7 +48,9 @@ function drawBall() {
 
 function drawPaddle() {
 
-  var paddleX = mouseX, paddleY = mouseY;
+  paddleX = mouseX || paddleX;
+  paddleY = mouseY || paddleY;
+
   var paddleWidth = 150, paddleHeight = 100, paddleStroke = 4, paddleRounding = 20;
 
   // enforce boundary conditions
