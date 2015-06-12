@@ -6,6 +6,5 @@ html, body {
 }
 
 canvas {
-  margin: 1em auto;
   border: 4px solid rgb(0,150,0);
 }

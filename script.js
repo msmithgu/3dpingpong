@@ -1,24 +1,43 @@
-var gameWidth = 640,
-    gameHeight = 480,
-    gameCenterX = gameWidth/2,
-    gameCenterY = gameHeight/2,
-    gameQuarterX = gameWidth/4,
-    gameQuarterY = gameHeight/4,
-    gameEighthX = gameWidth/8,
-    gameEighthY = gameHeight/8,
-    paddleX = gameCenterX,
-    paddleY = gameCenterY,
-    ballRadius = 24,
-    ballWidth = ballRadius * 2,
-    ballX = gameCenterX,
-    ballY = gameCenterY,
-    ballZ = 0,
-    ballVelocityX = 1,
-    ballVelocityY = 1,
-    ballVelocityZ = 1,
-    hallScale = 400;
+var gameWidth,
+    gameHeight,
+    gameCenterX,
+    gameCenterY,
+    gameQuarterX,
+    gameQuarterY,
+    gameEighthX,
+    gameEighthY,
+    paddleX,
+    paddleY,
+    ballRadius,
+    ballWidth,
+    ballX,
+    ballY,
+    ballZ,
+    ballVelocityX,
+    ballVelocityY,
+    ballVelocityZ,
+    hallScale;
 
 function setup() {
+  gameWidth = windowWidth - 8;
+  gameHeight = windowHeight - 8;
+  gameCenterX = gameWidth/2;
+  gameCenterY = gameHeight/2;
+  gameQuarterX = gameWidth/4;
+  gameQuarterY = gameHeight/4;
+  gameEighthX = gameWidth/8;
+  gameEighthY = gameHeight/8;
+  paddleX = gameCenterX;
+  paddleY = gameCenterY;
+  ballRadius = 24;
+  ballWidth = ballRadius * 2;
+  ballX = gameCenterX;
+  ballY = gameCenterY;
+  ballZ = 0;
+  ballVelocityX = 5;
+  ballVelocityY = 5;
+  ballVelocityZ = 1;
+  hallScale = 200;
   createCanvas(gameWidth, gameHeight);
   noCursor();
 }
@@ -39,6 +58,7 @@ function drawHall() {
   rect(gameEighthX, gameEighthY, gameWidth * 0.75, gameHeight * 0.75);
 
   // end
+  fill(0, 150, 0, 60);
   stroke(0, 150, 0);
   strokeWeight(1);
   rect(gameQuarterX, gameQuarterY, gameCenterX, gameCenterY);
@@ -53,9 +73,11 @@ function drawHall() {
 function drawBall() {
   var ballScale = ballWidth * (hallScale - ballZ) / hallScale;
       leftBound = gameWidth * (ballZ / hallScale/2),
-      rightBound = gameWidth - gameWidth * (ballZ / hallScale/2),
       topBound = gameHeight * (ballZ / hallScale/2),
-      bottomBound = gameHeight - gameHeight * (ballZ / hallScale/2),
+      scaledGameWidth = gameWidth * ((hallScale - ballZ) / hallScale),
+      scaledGameHeight = gameHeight * ((hallScale - ballZ) / hallScale),
+      rightBound = leftBound + scaledGameWidth,
+      bottomBound = topBound + scaledGameHeight,
       ballXscaled = leftBound + ballX * ballScale / ballWidth,
       ballYscaled = topBound + ballY * ballScale / ballWidth;
   ballX += ballVelocityX;
@@ -73,7 +95,7 @@ function drawBall() {
   noFill();
   stroke(150);
   strokeWeight(1);
-  rect(leftBound, topBound, gameWidth * ((hallScale - ballZ) / hallScale), gameHeight * ((hallScale - ballZ) / hallScale));
+  rect(leftBound, topBound, scaledGameWidth, scaledGameHeight);
   line(leftBound, ballYscaled, rightBound, ballYscaled);
   line(ballXscaled, topBound, ballXscaled, bottomBound);
 }
