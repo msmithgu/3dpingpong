@@ -8,12 +8,15 @@ var gameWidth = 640,
     gameEighthY = gameHeight/8,
     paddleX = gameCenterX,
     paddleY = gameCenterY,
-    ballWidth = 48,
+    ballRadius = 24,
+    ballWidth = ballRadius * 2,
     ballX = gameCenterX,
     ballY = gameCenterY,
     ballZ = 0,
-    ballVelocityZ = 5,
-    hallScale = 1000;
+    ballVelocityX = 1,
+    ballVelocityY = 1,
+    ballVelocityZ = 1,
+    hallScale = 400;
 
 function setup() {
   createCanvas(gameWidth, gameHeight);
@@ -21,9 +24,6 @@ function setup() {
 }
 
 function draw() {
-  ballZ += ballVelocityZ;
-  if ( (ballZ > hallScale/2) || (ballZ < 0)) { ballVelocityZ = - ballVelocityZ; }
-
   clear();
   drawHall();
   drawBall();
@@ -32,11 +32,6 @@ function draw() {
 
 function drawHall() {
   noFill();
-
-  // ball position
-  stroke(150);
-  strokeWeight(1);
-  rect(gameWidth * (ballZ / hallScale/2), gameHeight * (ballZ / hallScale/2), gameWidth * ((hallScale - ballZ) / hallScale), gameHeight * ((hallScale - ballZ) / hallScale));
 
   // middle
   stroke(0, 150, 0);
@@ -56,10 +51,31 @@ function drawHall() {
 }
 
 function drawBall() {
+  var ballScale = ballWidth * (hallScale - ballZ) / hallScale;
+      leftBound = gameWidth * (ballZ / hallScale/2),
+      rightBound = gameWidth - gameWidth * (ballZ / hallScale/2),
+      topBound = gameHeight * (ballZ / hallScale/2),
+      bottomBound = gameHeight - gameHeight * (ballZ / hallScale/2),
+      ballXscaled = leftBound + ballX * ballScale / ballWidth,
+      ballYscaled = topBound + ballY * ballScale / ballWidth;
+  ballX += ballVelocityX;
+  ballY += ballVelocityY;
+  ballZ += ballVelocityZ;
+  if ( (ballX + ballRadius > gameWidth) || (ballX - ballRadius < 0)) { ballVelocityX = - ballVelocityX; }
+  if ( (ballY + ballRadius > gameHeight) || (ballY - ballRadius < 0)) { ballVelocityY = - ballVelocityY; }
+  if ( (ballZ > hallScale/2) || (ballZ < 0)) { ballVelocityZ = - ballVelocityZ; }
+
   fill(255);
   strokeWeight(0);
-  var ballScale = ballWidth * (hallScale - ballZ) / hallScale;
-  ellipse(ballX, ballY, ballScale, ballScale);
+  ellipse(ballXscaled, ballYscaled, ballScale, ballScale);
+
+  // ball position markers
+  noFill();
+  stroke(150);
+  strokeWeight(1);
+  rect(leftBound, topBound, gameWidth * ((hallScale - ballZ) / hallScale), gameHeight * ((hallScale - ballZ) / hallScale));
+  line(leftBound, ballYscaled, rightBound, ballYscaled);
+  line(ballXscaled, topBound, ballXscaled, bottomBound);
 }
 
 function drawPaddle() {
