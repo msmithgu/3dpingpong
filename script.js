@@ -80,10 +80,21 @@ function drawBall() {
 
 function drawPaddle() {
 
+  // player control
   paddleX = mouseX || paddleX;
   paddleY = mouseY || paddleY;
 
-  var paddleWidth = 150, paddleHeight = 100, paddleStroke = 4, paddleRounding = 20;
+  // auto-play override
+  paddleX = ballX;
+  paddleY = ballY;
+
+  var paddleWidth = 150,
+      paddleHeight = 100,
+      paddleStroke = 4,
+      paddleRounding = 20,
+      paddleColor = color(0, 200, 0),
+      paddleInnerColor = color(0, 200, 0, 60),
+      paddleHitColor = color(0, 255, 0);
 
   // enforce boundary conditions
   var paddleXmin = (paddleWidth + paddleStroke)/2,
@@ -117,8 +128,7 @@ function drawPaddle() {
         paddleX + paddleWidth/2, paddleY );
 
   // inner border
-  fill(color(0, 255, 0, 60));
-  stroke(0, 255, 0);
+  fill(paddleInnerColor);
   strokeWeight(paddleStroke/2);
   rect( paddleX - paddleWidth/4, paddleY - paddleHeight/4,
         paddleWidth/2, paddleHeight/2,
