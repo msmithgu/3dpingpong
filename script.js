@@ -7,7 +7,13 @@ var gameWidth = 640,
     gameEighthX = gameWidth/8,
     gameEighthY = gameHeight/8,
     paddleX = gameCenterX,
-    paddleY = gameCenterY;
+    paddleY = gameCenterY,
+    ballWidth = 48,
+    ballX = gameCenterX,
+    ballY = gameCenterY,
+    ballZ = 0,
+    ballVelocityZ = 5,
+    hallScale = 1000;
 
 function setup() {
   createCanvas(gameWidth, gameHeight);
@@ -15,24 +21,34 @@ function setup() {
 }
 
 function draw() {
+  ballZ += ballVelocityZ;
+  if ( (ballZ > hallScale/2) || (ballZ < 0)) { ballVelocityZ = - ballVelocityZ; }
+
   clear();
-
   drawHall();
-
   drawBall();
-
   drawPaddle();
 }
 
 function drawHall() {
   noFill();
-  stroke(0, 150, 0);
 
+  // ball position
+  stroke(150);
+  strokeWeight(1);
+  rect(gameWidth * (ballZ / hallScale/2), gameHeight * (ballZ / hallScale/2), gameWidth * ((hallScale - ballZ) / hallScale), gameHeight * ((hallScale - ballZ) / hallScale));
+
+  // middle
+  stroke(0, 150, 0);
   strokeWeight(2);
   rect(gameEighthX, gameEighthY, gameWidth * 0.75, gameHeight * 0.75);
 
+  // end
+  stroke(0, 150, 0);
   strokeWeight(1);
   rect(gameQuarterX, gameQuarterY, gameCenterX, gameCenterY);
+
+  // hall lines
   line(0, 0, gameQuarterX, gameQuarterY);
   line(0, gameHeight, gameQuarterX, gameHeight - gameQuarterY);
   line(gameWidth, 0, gameWidth - gameQuarterX, gameQuarterY);
@@ -40,10 +56,10 @@ function drawHall() {
 }
 
 function drawBall() {
-  var ballWidth = 48;
   fill(255);
   strokeWeight(0);
-  ellipse(gameCenterX, gameCenterY, ballWidth, ballWidth);
+  var ballScale = ballWidth * (hallScale - ballZ) / hallScale;
+  ellipse(ballX, ballY, ballScale, ballScale);
 }
 
 function drawPaddle() {
