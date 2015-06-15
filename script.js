@@ -87,10 +87,6 @@ function drawBall() {
   if ( (ballY + ballRadius > gameHeight) || (ballY - ballRadius < 0)) { ballVelocityY = - ballVelocityY; }
   if ( (ballZ > hallScale/2) || (ballZ < 0)) { ballVelocityZ = - ballVelocityZ; }
 
-  fill(255);
-  strokeWeight(0);
-  ellipse(ballXscaled, ballYscaled, ballScale, ballScale);
-
   // ball position markers
   noFill();
   stroke(150);
@@ -98,6 +94,11 @@ function drawBall() {
   rect(leftBound, topBound, scaledGameWidth, scaledGameHeight);
   line(leftBound, ballYscaled, rightBound, ballYscaled);
   line(ballXscaled, topBound, ballXscaled, bottomBound);
+
+  // ball itself
+  fill(255);
+  strokeWeight(0);
+  ellipse(ballXscaled, ballYscaled, ballScale, ballScale);
 }
 
 function drawPaddle() {
